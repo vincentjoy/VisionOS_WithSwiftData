@@ -14,14 +14,23 @@ struct ContentView: View {
     
     @State var isAddNewWorkoutViewPresented: Bool = false
     @Query var workoutItems: [WorkoutItem]
+    @Environment(\.modelContext) var modelContext
     
     var body: some View {
         VStack {
             Text("Workout App")
                 .font(.extraLargeTitle)
             
-            List(workoutItems) { workoutItem in
-                Text(workoutItem.name)
+            List {
+                ForEach(workoutItems) { workoutItem in
+                    ListRow(workoutItem: workoutItem)
+                }
+                .onDelete { indexSet in
+                    for index in indexSet {
+                        let itemToDelete = workoutItems[index]
+                        modelContext.delete(itemToDelete)
+                    }
+                }
             }
             
             Button("Add") {
@@ -32,6 +41,23 @@ struct ContentView: View {
             AddWorkoutView()
         })
         .padding()
+    }
+}
+
+struct ListRow: View {
+    
+    @Bindable var workoutItem: WorkoutItem
+    
+    var body: some View {
+        HStack {
+            Text(workoutItem.name)
+                .font(.title)
+            
+            Spacer()
+            
+            Toggle("", systemImage: "checkmark", isOn: $workoutItem.status)
+                .toggleStyle(.button)
+        }
     }
 }
 
