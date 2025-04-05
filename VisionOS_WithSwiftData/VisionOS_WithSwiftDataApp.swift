@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct VisionOS_WithSwiftDataApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .modelContainer(for: [WorkoutItem.self])
         }
     }
 }

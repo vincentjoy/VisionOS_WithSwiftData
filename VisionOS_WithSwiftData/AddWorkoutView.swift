@@ -11,6 +11,7 @@ struct AddWorkoutView: View {
     
     @State var inputText: String = ""
     @Environment(\.dismiss) var dismissCurrentView
+    @Environment(\.modelContext) var modelContext
     
     var body: some View {
         VStack(spacing: 16) {
@@ -21,6 +22,9 @@ struct AddWorkoutView: View {
                 .textFieldStyle(.roundedBorder)
             
             Button("", systemImage: "checkmark") {
+                let workoutItem = WorkoutItem(name: inputText, status: false)
+                modelContext.insert(workoutItem)
+                
                 dismissCurrentView()
             }
             .labelStyle(.iconOnly)
