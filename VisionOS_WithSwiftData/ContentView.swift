@@ -8,21 +8,20 @@
 import SwiftUI
 import RealityKit
 import RealityKitContent
+import SwiftData
 
 struct ContentView: View {
     
     @State var isAddNewWorkoutViewPresented: Bool = false
+    @Query var workoutItems: [WorkoutItem]
     
     var body: some View {
         VStack {
             Text("Workout App")
                 .font(.extraLargeTitle)
             
-            List {
-                Text("Workout 1")
-                Text("Workout 2")
-                Text("Workout 3")
-                Text("Workout 4")
+            List(workoutItems) { workoutItem in
+                Text(workoutItem.name)
             }
             
             Button("Add") {
@@ -37,5 +36,8 @@ struct ContentView: View {
 }
 
 #Preview(windowStyle: .automatic) {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: WorkoutItem.self, configurations: config)
     ContentView()
+        .modelContainer(container)
 }
