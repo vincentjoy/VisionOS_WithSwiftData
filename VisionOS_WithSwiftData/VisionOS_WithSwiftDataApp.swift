@@ -10,10 +10,21 @@ import SwiftData
 
 @main
 struct VisionOS_WithSwiftDataApp: App {
+    
+    @State var immersionStyle: ImmersionStyle = .mixed
+    
+    var body: some Scene {
+        ImmersiveSpace {
+            HandTrackingApp()
+        }
+        .immersionStyle(selection: $immersionStyle, in: .mixed, .full, .progressive)
+    }
+    
+    /*
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .modelContainer(for: [WorkoutItem.self])
+            HandTrackingApp()
         }
     }
+    */
 }
